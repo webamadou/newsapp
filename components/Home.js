@@ -1,9 +1,18 @@
 import React, { Component } from "react";
-import { View, Text, Button, AppRegistry, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  AppRegistry,
+  FlatList,
+  Image,
+  TouchableHighlight
+} from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import LogoTitle from "./Logo";
 import Styles from "../styles/Main";
-import Axios from "axios";
+import LogoTitle from "./Logo";
+4;
+import Articles from "../sources/Articles";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -25,48 +34,72 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.setParams({ increaseCount: this._increaseCount });
   }
 
+  componentDidMount() {
+    this.setState({
+      articles: this.getArticles()
+    });
+  }
   state = {
     count: 0,
     articles: {}
   };
 
   getArticles = () => {
-    let url =
-      "https://newsapi.org/v2/top-headlines?country=us&apiKey=011f49996cf34ff88975c3f04af0d216";
-
-    /* Axios.get(url).then(response => {
-      console.log(response);
-    }); */
-    Axios.get(url).then(response => {
-      console.log(response.json());
-      this.setState({ articles: response.data });
-    });
+    /* THIS FUNCITON WILL BE USED TO GET THE DATA FROM AN API.*/
+    /* SINCE WE DON'T HAVE AN API YET, WE WILL BE USING DATA FROM THE SCRIPT ARTICLES.JS AS THE SOURCES OF OUR DATA */
+    /* var url =
+      "https://gnews.io/api/v2/?q=example&token=c8d9a22a2a2c4317f1a9286a2229138a";
+    var req = new Request(url);
+    Axios.get(req).then(function(response) {
+      //const data = JSON.stringify(response);
+      console.log(JSON.stringify(response));
+    }); 
+    */
+    return Articles;
   };
 
-  componentDidMount() {
-    this.getArticles();
-  }
   _increaseCount = () => {
     this.setState({ count: this.state.count + 1 });
   };
 
+  readArticle = id => {
+    console.log(`go to page ${id}`);
+  };
+
   render() {
+    /* const data = this.articles.data.map((k, v) => {
+      console.log(k);
+    }); */
+
     return (
-      <View style={Styles.container}>
+      <View>
         <FlatList
-          data={[
-            { key: "Lebron" },
-            { key: "Curry" },
-            { key: "Irving" },
-            { key: "Jokic" },
-            { key: "Janis" },
-            { key: "KD" },
-            { key: "Lillard" },
-            { key: "Harden" },
-            { key: "AD" },
-            { key: "Green" }
-          ]}
-          renderItem={({ item }) => <Text>{item.key}</Text>}
+          data={this.state.articles}
+          renderItem={({ item }) => (
+            <View>
+              <View style={Styles.articleContainer}>
+                <View style={Styles.imageWrapper}>
+                  <TouchableHighlight
+                    onPress={() =>
+                      this.props.navigation.navigate("ViewArticle", {
+                        idArticle: item.data[0].id,
+                        index: this.state.articles.indexOf(item)
+                      })
+                    }
+                  >
+                    <Image
+                      source={{ uri: item.data[0].attributes.featuredImage }}
+                      style={Styles.imageArticle}
+                    />
+                  </TouchableHighlight>
+                  <Text style={Styles.categoryArticles}>Category</Text>
+                </View>
+                <Text style={Styles.titleArticle}>
+                  {item.data[0].attributes.title}
+                </Text>
+              </View>
+            </View>
+          )}
         />
       </View>
     );
