@@ -11,11 +11,25 @@ import {
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Styles from "../styles/Main";
 import LogoTitle from "./Logo";
-4;
-import Articles from "../sources/Articles";
-import ViewArticle from "./ViewArticle";
 
-class HomeScreen extends React.Component {
+import Articles from "../sources/Articles";
+
+export default class TopArticle extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+
+    return {
+      headerTitle: <LogoTitle />,
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate("MyModal")}
+          title="Menu"
+          color={Styles.colorOne}
+        />
+      )
+    };
+  };
+
   componentWillMount() {
     this.props.navigation.setParams({ increaseCount: this._increaseCount });
   }
@@ -53,10 +67,6 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-    /* const data = this.articles.data.map((k, v) => {
-      console.log(k);
-    }); */
-
     return (
       <View>
         <FlatList
@@ -78,7 +88,24 @@ class HomeScreen extends React.Component {
                       style={Styles.imageArticle}
                     />
                   </TouchableHighlight>
-                  <Text style={Styles.categoryArticles}>Category</Text>
+                  <Text
+                    style={[
+                      Styles.categoryArticles,
+                      {
+                        borderBottomColor:
+                          item.data[0].relationships.categories.color
+                      }
+                    ]}
+                    onPress={() =>
+                      this.props.navigation.navigate("Categories", {
+                        categoryId: item.data[0].relationships.categories.id,
+                        categoryName:
+                          item.data[0].relationships.categories.title
+                      })
+                    }
+                  >
+                    {item.data[0].relationships.categories.title}
+                  </Text>
                 </View>
                 <Text style={Styles.titleArticle}>
                   {item.data[0].attributes.title}
@@ -92,17 +119,3 @@ class HomeScreen extends React.Component {
     );
   }
 }
-
-const StackNavigator = createStackNavigator(
-  {
-    Home: { screen: HomeScreen },
-    ViewArticle: { screen: ViewArticle }
-  },
-  {
-    navigationOptions: {
-      headerMode: "none"
-    }
-  }
-);
-
-export default createAppContainer(StackNavigator);

@@ -13,14 +13,19 @@ import Styles from "../styles/Main";
 import LogoTitle from "./Logo";
 4;
 import Articles from "../sources/Articles";
-import ViewArticle from "./ViewArticle";
 
-class HomeScreen extends React.Component {
-  componentWillMount() {
-    this.props.navigation.setParams({ increaseCount: this._increaseCount });
-  }
+export default class Categories extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: params ? `Category ${params.categoryName}` : "Category"
+    };
+  };
 
   componentDidMount() {
+    const { categoryName, categoryId } = this.props.navigation.state.params;
+    this.setState({ categoryName, categoryId });
+
     this.setState({
       articles: this.getArticles()
     });
@@ -29,7 +34,6 @@ class HomeScreen extends React.Component {
     count: 0,
     articles: {}
   };
-
   getArticles = () => {
     /* THIS FUNCITON WILL BE USED TO GET THE DATA FROM AN API.*/
     /* SINCE WE DON'T HAVE AN API YET, WE WILL BE USING DATA FROM THE SCRIPT ARTICLES.JS AS THE SOURCES OF OUR DATA */
@@ -44,19 +48,7 @@ class HomeScreen extends React.Component {
     return Articles;
   };
 
-  _increaseCount = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-
-  readArticle = id => {
-    console.log(`go to page ${id}`);
-  };
-
   render() {
-    /* const data = this.articles.data.map((k, v) => {
-      console.log(k);
-    }); */
-
     return (
       <View>
         <FlatList
@@ -78,7 +70,9 @@ class HomeScreen extends React.Component {
                       style={Styles.imageArticle}
                     />
                   </TouchableHighlight>
-                  <Text style={Styles.categoryArticles}>Category</Text>
+                  <Text style={Styles.categoryArticles}>
+                    {this.state.categoryName}
+                  </Text>
                 </View>
                 <Text style={Styles.titleArticle}>
                   {item.data[0].attributes.title}
@@ -92,17 +86,3 @@ class HomeScreen extends React.Component {
     );
   }
 }
-
-const StackNavigator = createStackNavigator(
-  {
-    Home: { screen: HomeScreen },
-    ViewArticle: { screen: ViewArticle }
-  },
-  {
-    navigationOptions: {
-      headerMode: "none"
-    }
-  }
-);
-
-export default createAppContainer(StackNavigator);

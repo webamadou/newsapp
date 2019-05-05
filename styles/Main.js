@@ -6,6 +6,12 @@ let articleHeight = height - height * 0.3;
 
 let blue = "#213868";
 let red = "#cc4448";
+let red2 = "#ca393a";
+let green = "#3d8b30";
+let yellow = "#f6b33a";
+let darkBlue = "#132843";
+let purple = "#511a23";
+let darkgrey = "#333333";
 
 export default (styles = {
   colorOne: blue,
@@ -38,7 +44,9 @@ export default (styles = {
     fontSize: 15,
     top: 0,
     color: blue,
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    borderBottomColor: darkgrey,
+    borderBottomWidth: 1
   },
   articlesWrapper: {
     width: width,
@@ -71,7 +79,7 @@ export default (styles = {
   titleArticle: {
     fontSize: 25,
     fontWeight: "bold",
-    color: "#1d1d1d",
+    color: darkgrey,
     paddingVertical: 6,
     paddingHorizontal: 12
   },
@@ -83,5 +91,22 @@ export default (styles = {
     paddingVertical: 6,
     paddingHorizontal: 12,
     textAlign: "justify"
+  },
+  /*--- caegories design ---*/
+  sport: {
+    borderBottomColor: green,
+    borderBottomWidth: 1
+  },
+  politique: {
+    borderBottomColor: blue,
+    borderBottomWidth: 1
+  },
+  culture: {
+    borderBottomColor: yellow,
+    borderBottomWidth: 1
+  },
+  society: {
+    borderBottomColor: blue,
+    borderBottomWidth: 1
   }
 });

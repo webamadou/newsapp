@@ -1,27 +1,36 @@
 import React from "react";
 import { Button, Image, View, Text } from "react-native";
 import HomeScreen from "./components/Home";
-import DetailsScreen from "./components/Details";
-import ModalScreen from "./components/Modal";
+import TopArticles from "./components/TopArticle";
 import ViewArticle from "./components/ViewArticle";
-import Style from "./styles/Main";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import Categories from "./components/Categories";
+import Styles from "./styles/Main";
+import {
+  createMaterialTopTabNavigator,
+  createStackNavigator,
+  createAppContainer
+} from "react-navigation";
 
-const MainStack = createStackNavigator(
+const MainStack = createMaterialTopTabNavigator(
   {
-    Home: { screen: HomeScreen },
-    Details: { screen: DetailsScreen },
-    ViewArticle: { screen: ViewArticle }
+    Recentes: { screen: HomeScreen },
+    TopArticles: { screen: TopArticles }
   },
   {
-    initialRouteName: "Home",
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: styles.colorOne
+    tabBarPosition: "top",
+    initialRouteName: "Recentes",
+    tabBarOptions: {
+      tabStyle: {
+        paddingTop: 30,
+        paddingBottom: 0,
+        height: 70,
+        backgroundColor: "#26427b"
       },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold"
+      indicatorStyle: {
+        backgroundColor: null
+      },
+      style: {
+        backgroundColor: Styles.colorOne
       }
     }
   }
