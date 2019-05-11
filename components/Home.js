@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Button,
   AppRegistry,
   FlatList,
   Image,
@@ -10,12 +9,32 @@ import {
 } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Styles from "../styles/Main";
-import LogoTitle from "./Logo";
-4;
+import Logo from "./Logo";
+
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+
 import Articles from "../sources/Articles";
 import ViewArticle from "./ViewArticle";
 
-class HomeScreen extends React.Component {
+export default class HomeScreen extends React.Component {
+  static navigationOptions = ({navigation}) => {
+
+    const {params} = navigation.state || {};
+
+    return {
+      headerTitle: <View><Text><Logo />"A la une"</Text></View>,
+      headerRight: <Button onPress={() => navigation.toggleDrawer()}
+      icon={ <Icon name="bars" size={15} color="white" /> }
+      buttonStyle={{
+        backgroundColor: Styles.colors.colorOne
+      }}
+      fontSize="20"
+      title=""
+      color={Styles.colors.colorOne} accessibilityLabel="Learn more about this purple button" />
+    }
+  }
   componentWillMount() {
     this.props.navigation.setParams({ increaseCount: this._increaseCount });
   }
@@ -39,7 +58,7 @@ class HomeScreen extends React.Component {
     Axios.get(req).then(function(response) {
       //const data = JSON.stringify(response);
       console.log(JSON.stringify(response));
-    }); 
+    });
     */
     return Articles;
   };
@@ -48,15 +67,7 @@ class HomeScreen extends React.Component {
     this.setState({ count: this.state.count + 1 });
   };
 
-  readArticle = id => {
-    console.log(`go to page ${id}`);
-  };
-
   render() {
-    /* const data = this.articles.data.map((k, v) => {
-      console.log(k);
-    }); */
-
     return (
       <View>
         <FlatList
@@ -92,7 +103,7 @@ class HomeScreen extends React.Component {
     );
   }
 }
-
+/*
 const StackNavigator = createStackNavigator(
   {
     Home: { screen: HomeScreen },
@@ -106,3 +117,4 @@ const StackNavigator = createStackNavigator(
 );
 
 export default createAppContainer(StackNavigator);
+*/

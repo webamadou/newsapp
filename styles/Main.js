@@ -14,8 +14,10 @@ let purple = "#511a23";
 let darkgrey = "#333333";
 
 export default (styles = {
-  colorOne: blue,
-  colorTwo: red,
+  colors: {
+    colorOne: blue,
+    colorTwo: red,
+  },
   logo: {
     width: 100,
     height: 30,

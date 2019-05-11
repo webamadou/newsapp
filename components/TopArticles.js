@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Button,
   AppRegistry,
   FlatList,
   Image,
@@ -12,24 +11,29 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Styles from "../styles/Main";
 import LogoTitle from "./Logo";
 
-import Articles from "../sources/Articles";
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class TopArticle extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    const params = navigation.state.params || {};
+
+import Articles from "../sources/Articles";
+import ViewArticle from "./ViewArticle";
+
+export default class TopArticles extends React.Component {
+  static navigationOptions = ({navigation}) => {
+
+    const {params} = navigation.state || {};
 
     return {
-      headerTitle: <LogoTitle />,
-      headerRight: (
-        <Button
-          onPress={() => navigation.navigate("MyModal")}
-          title="Menu"
-          color={Styles.colorOne}
-        />
-      )
-    };
-  };
-
+      headerRight: <Button onPress={() => navigation.toggleDrawer()}
+      icon={ <Icon name="bars" size={15} color="white" /> }
+      buttonStyle={{
+        backgroundColor: Styles.colors.colorOne
+      }}
+      fontSize="20"
+      title=""
+      color={Styles.colors.colorOne} accessibilityLabel="Learn more about this purple button" />
+    }
+  }
   componentWillMount() {
     this.props.navigation.setParams({ increaseCount: this._increaseCount });
   }
@@ -53,17 +57,13 @@ export default class TopArticle extends React.Component {
     Axios.get(req).then(function(response) {
       //const data = JSON.stringify(response);
       console.log(JSON.stringify(response));
-    }); 
+    });
     */
     return Articles;
   };
 
   _increaseCount = () => {
     this.setState({ count: this.state.count + 1 });
-  };
-
-  readArticle = id => {
-    console.log(`go to page ${id}`);
   };
 
   render() {
@@ -88,24 +88,7 @@ export default class TopArticle extends React.Component {
                       style={Styles.imageArticle}
                     />
                   </TouchableHighlight>
-                  <Text
-                    style={[
-                      Styles.categoryArticles,
-                      {
-                        borderBottomColor:
-                          item.data[0].relationships.categories.color
-                      }
-                    ]}
-                    onPress={() =>
-                      this.props.navigation.navigate("Categories", {
-                        categoryId: item.data[0].relationships.categories.id,
-                        categoryName:
-                          item.data[0].relationships.categories.title
-                      })
-                    }
-                  >
-                    {item.data[0].relationships.categories.title}
-                  </Text>
+                  <Text style={Styles.categoryArticles}>Category</Text>
                 </View>
                 <Text style={Styles.titleArticle}>
                   {item.data[0].attributes.title}
@@ -119,3 +102,18 @@ export default class TopArticle extends React.Component {
     );
   }
 }
+/*
+const StackNavigator = createStackNavigator(
+  {
+    Home: { screen: HomeScreen },
+    ViewArticle: { screen: ViewArticle }
+  },
+  {
+    navigationOptions: {
+      headerMode: "none"
+    }
+  }
+);
+
+export default createAppContainer(StackNavigator);
+*/
